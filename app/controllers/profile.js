@@ -116,8 +116,8 @@ exports.getProfile = async (req, res) => {
 exports.updateProfile = async (req, res) => {
   try {
     const id = await utils.isIDGood(req.user._id)
-    req = matchedData(req)
-    res.status(200).json(await updateProfileInDB(req, id))
+    // req = matchedData(req)
+    res.status(200).json(await updateProfileInDB(req.body, id))
   } catch (error) {
     utils.handleError(res, error)
   }

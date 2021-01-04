@@ -29,6 +29,10 @@ const UserSchema = new mongoose.Schema(
       enum: ['user', 'admin'],
       default: 'user'
     },
+    favoritesSounds: {
+      type: Object,
+      default: {}
+    },
     verification: {
       type: String
     },
@@ -78,7 +82,8 @@ const UserSchema = new mongoose.Schema(
   },
   {
     versionKey: false,
-    timestamps: true
+    timestamps: true,
+    minimize: false
   }
 )
 

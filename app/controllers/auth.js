@@ -48,7 +48,8 @@ const setUserInfo = (req) => {
     name: req.name,
     email: req.email,
     role: req.role,
-    verified: req.verified
+    verified: req.verified,
+    favoritesSounds: req.favoritesSounds
   }
   // Adds verification for testing purposes
   if (process.env.NODE_ENV !== 'production') {
@@ -176,7 +177,7 @@ const findUser = async (email) => {
       {
         email
       },
-      'password loginAttempts blockExpires name email role verified verification',
+      'password loginAttempts blockExpires name email role verified verification favoritesSounds',
       (err, item) => {
         utils.itemNotFound(err, item, reject, 'USER_DOES_NOT_EXIST')
         resolve(item)
@@ -446,6 +447,7 @@ exports.login = async (req, res) => {
   try {
     const data = matchedData(req)
     const user = await findUser(data.email)
+    console.log(user)
     await userIsBlocked(user)
     await checkLoginAttemptsAndBlockExpires(user)
     const isPasswordMatch = await auth.checkPassword(data.password, user)
@@ -471,7 +473,8 @@ exports.register = async (req, res) => {
   try {
     // Gets locale from header 'Accept-Language'
     const locale = req.getLocale()
-    req = matchedData(req)
+    req = matchedData(req);
+    // req = matchedData(req)
     const doesEmailExists = await emailer.emailExists(req.email)
     if (!doesEmailExists) {
       const item = await registerUser(req)
